@@ -6,7 +6,7 @@ const router = express.Router();
 //dados de conexão com o banco de dados
 const dbKnex = require("../data/db_config"); 
 
-//método get é usado para consulta
+//método get retorna todos os livros do banco de dados
 router.get("/",async(req,res) => {
     try{
         //para obter os livros pode-se utilizar .select().orderBy() ou apenas .orderBy()
@@ -17,11 +17,17 @@ router.get("/",async(req,res) => {
     }
 });
 
-
 //método post é usado para inclusão
 router.post("/",async (req,res)=>{
     //faz a desestruturação dos dados recebidos no corpo da requisição
-    const {titulo, autor, ano, preoc, foto} = req.body;
+    const titulo = req.params.titulo;
+    const autor = req.params.autor;
+    const ano = req.params.ano;
+    const preco = req.params.preco;
+    const foto = req.params.foto;
+
+
+    //const {titulo, autor, ano, preco, foto} = req.body;
 
     //se algum dos campos não foi passado, irá enviar uma mensagem de erro ao retornar
     if(!titulo || !autor || !ano || !preco || !foto){
@@ -62,4 +68,5 @@ router.delete("/:id",async(req,res) => {
         res.status(400).json({msg:error.message}); //retorna status de erro e msg
     }
 });
+
 module.exports = router;
